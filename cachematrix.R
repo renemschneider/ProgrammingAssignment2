@@ -7,17 +7,17 @@
 ## It finally packs all matrices in one list, which is the return value of this function.
 
 makeCacheMatrix <- function(x = matrix()) {
-  m <- NULL
-  set <- function(y) {
-    x <<- y
+  m <- NULL ## creates empty matrix
+  set <- function(y) { ## caches matrix x
+    x <<- y ##sets argument x to y
     write (x)
-    m <<- NULL
+    m <<- NULL ## creates empty matrix in the cache
   }
-  get <- function() x
-  setInv <- function(solve) m <<- solve
-  getInv <- function() m
+  get <- function() x ## simply gets back matrix x
+  setInv <- function(solve) m <<- solve ## calculats inverted matrix and assigns it to the cached empty matrix
+  getInv <- function() m ## gets the matrix from the cache
   write (m)
-  list(set = set, get = get,
+  list(set = set, get = get, ## returns all functions of function makeCacheMatrix as a list of functions
        setInv = setInv,
        getInv = getInv)  
 }
@@ -28,13 +28,13 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
   ## Return a matrix that is the inverse of 'x'
-  m <- x$getInv()
-  if(!is.null(m)) {
+  m <- x$getInv() ##checks in the cache if inverted matrix exists
+  if(!is.null(m)) { ## if inverted matrix exists, this matrix is given back from the cache and returned
     message("getting cached data")
     return(m)
   }
-  data <- x$get()
-  m <- solve(data, ...)
-  x$setInv(m)
-  m
+  data <- x$get() 
+  m <- solve(data, ...) ##calculates an inverted matrix and assigns it to m
+  x$setInv(m) ##sets value of the inverted matrix
+  m ##returns m
 }
